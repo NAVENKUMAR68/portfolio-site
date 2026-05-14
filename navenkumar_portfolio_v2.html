@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Navenkumar S — Full Stack Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#050810;--bg2:#080d1a;--bg3:#0a1020;
+  --cyan:#00e5ff;--purple:#a855f7;--pink:#ec4899;--blue:#3b82f6;--green:#4ade80;
+  --glass:rgba(255,255,255,0.04);--glass2:rgba(255,255,255,0.07);
+  --border:rgba(255,255,255,0.08);--border2:rgba(0,229,255,0.2);
+  --text:#e2e8f0;--muted:#64748b;
+  --font:'Space Grotesk',sans-serif;--display:'Syne',sans-serif;--mono:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font);overflow-x:hidden;cursor:none}
+#cursor{position:fixed;width:10px;height:10px;background:var(--cyan);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:screen;transition:width .15s,height .15s}
+#cursor-trail{position:fixed;width:36px;height:36px;border:1px solid rgba(0,229,255,0.25);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:left .1s ease,top .1s ease}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");opacity:.35;pointer-events:none;z-index:1}
+.blob{position:fixed;border-radius:50%;filter:blur(100px);pointer-events:none;z-index:0;animation:blobFloat 10s ease-in-out infinite}
+.b1{width:500px;height:500px;background:radial-gradient(circle,rgba(168,85,247,0.13),transparent 70%);top:-150px;left:-80px}
+.b2{width:450px;height:450px;background:radial-gradient(circle,rgba(0,229,255,0.09),transparent 70%);top:35%;right:-120px;animation-delay:4s}
+.b3{width:350px;height:350px;background:radial-gradient(circle,rgba(236,72,153,0.07),transparent 70%);bottom:15%;left:25%;animation-delay:7s}
+@keyframes blobFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-25px)}}
+.grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:55px 55px;pointer-events:none;z-index:0}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--cyan),var(--purple));border-radius:2px}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.1rem 3rem;display:flex;align-items:center;justify-content:space-between;background:rgba(5,8,16,0.65);backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:var(--display);font-size:1.25rem;font-weight:800;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:.82rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;transition:color .3s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--cyan);transition:width .3s}
+.nav-links a:hover{color:var(--text)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{padding:.45rem 1.3rem;border:1px solid var(--border2);border-radius:100px;color:var(--cyan);font-size:.82rem;font-weight:500;background:rgba(0,229,255,0.04);cursor:pointer;transition:all .3s;text-decoration:none}
+.nav-cta:hover{background:rgba(0,229,255,0.1);box-shadow:0 0 20px rgba(0,229,255,0.12)}
+
+section{position:relative;z-index:2}
+.glow-divider{width:100%;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),var(--purple),transparent);opacity:.15;position:relative;z-index:2}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;align-items:center;padding:0 10vw;padding-top:80px}
+.hero-wrap{display:grid;grid-template-columns:1fr auto;gap:4rem;align-items:center;width:100%}
+.hero-badge{display:inline-flex;align-items:center;gap:.5rem;padding:.35rem 1rem;border:1px solid var(--border2);border-radius:100px;background:rgba(0,229,255,0.04);font-size:.72rem;font-weight:500;color:var(--cyan);letter-spacing:.08em;text-transform:uppercase;margin-bottom:1.8rem;animation:fadeUp .7s ease both}
+.hero-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse2 2s infinite}
+@keyframes pulse2{0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,.5)}50%{box-shadow:0 0 0 5px rgba(74,222,128,0)}}
+h1.hero-name{font-family:var(--display);font-size:clamp(2.8rem,7vw,5.5rem);font-weight:800;line-height:1;letter-spacing:-0.03em;margin-bottom:1rem;animation:fadeUp .7s .1s ease both}
+.gradient-text{background:linear-gradient(135deg,var(--cyan) 0%,var(--purple) 50%,var(--pink) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-size:200%;animation:gs 5s ease infinite}
+@keyframes gs{0%,100%{background-position:0%}50%{background-position:100%}}
+.hero-role{font-size:1rem;color:var(--muted);margin-bottom:1rem;animation:fadeUp .7s .15s ease both}
+.hero-role strong{color:var(--text)}
+.hero-desc{font-size:.95rem;color:var(--muted);line-height:1.85;max-width:520px;margin-bottom:2rem;animation:fadeUp .7s .2s ease both}
+.hero-btns{display:flex;gap:.9rem;flex-wrap:wrap;margin-bottom:2rem;animation:fadeUp .7s .25s ease both}
+.btn-primary{padding:.75rem 1.8rem;background:linear-gradient(135deg,var(--cyan),var(--purple));border:none;border-radius:100px;color:#000;font-weight:700;font-size:.88rem;cursor:pointer;transition:all .3s;text-decoration:none;display:inline-flex;align-items:center;gap:.45rem}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 35px rgba(0,229,255,0.25)}
+.btn-ghost{padding:.75rem 1.8rem;border:1px solid var(--border);border-radius:100px;color:var(--text);font-weight:500;font-size:.88rem;cursor:pointer;transition:all .3s;text-decoration:none;background:var(--glass);display:inline-flex;align-items:center;gap:.45rem;backdrop-filter:blur(10px)}
+.btn-ghost:hover{border-color:var(--border2);color:var(--cyan);transform:translateY(-2px)}
+.hero-socials{display:flex;gap:.75rem;animation:fadeUp .7s .3s ease both}
+.soc{width:40px;height:40px;border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--muted);text-decoration:none;transition:all .3s;background:var(--glass);backdrop-filter:blur(10px)}
+.soc:hover{border-color:var(--border2);color:var(--cyan);transform:translateY(-3px);box-shadow:0 6px 18px rgba(0,229,255,0.12)}
+.soc svg{width:17px;height:17px}
+.hero-stats{display:flex;flex-direction:column;gap:1rem;animation:fadeLeft .7s .4s ease both}
+@keyframes fadeLeft{from{opacity:0;transform:translateX(25px)}to{opacity:1;transform:translateX(0)}}
+.scard{padding:1.1rem 1.4rem;background:var(--glass);border:1px solid var(--border);border-radius:14px;backdrop-filter:blur(20px);text-align:center;transition:all .3s;min-width:110px}
+.scard:hover{border-color:var(--border2);transform:translateX(-4px)}
+.snum{font-family:var(--display);font-size:1.6rem;font-weight:800;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.slbl{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-top:.15rem}
+.hero-scroll{position:absolute;bottom:1.8rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.4rem;color:var(--muted);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;animation:fadeUp 1s 1.2s ease both;opacity:0}
+.scl{width:1px;height:35px;background:linear-gradient(var(--cyan),transparent);animation:sp 2s ease infinite}
+@keyframes sp{0%{opacity:1}100%{opacity:0;transform:scaleY(.4)}}
+
+/* SECTION COMMON */
+.sec-label{font-size:.72rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--cyan);margin-bottom:.8rem;opacity:.8}
+.sec-title{font-family:var(--display);font-size:clamp(1.8rem,4vw,3rem);font-weight:800;letter-spacing:-0.03em;line-height:1.1;margin-bottom:2.5rem}
+.reveal{opacity:0;transform:translateY(35px);transition:all .75s cubic-bezier(0.16,1,.3,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* ABOUT */
+#about{padding:7rem 10vw}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem}
+.about-text p{color:var(--muted);line-height:1.9;font-size:.95rem;margin-bottom:.9rem}
+.about-text p strong{color:var(--text)}
+.info-card{padding:1.4rem;background:var(--glass);border:1px solid var(--border);border-radius:18px;backdrop-filter:blur(20px);margin-top:1.4rem}
+.ir{display:flex;justify-content:space-between;padding:.55rem 0;border-bottom:1px solid var(--border);font-size:.85rem}
+.ir:last-child{border-bottom:none}
+.ir .lbl{color:var(--muted)}
+.ir .val{color:var(--cyan);font-weight:500}
+.skills-wrap{display:flex;flex-direction:column;gap:.85rem}
+.sk-item{display:flex;flex-direction:column;gap:.35rem}
+.sk-hd{display:flex;justify-content:space-between;font-size:.82rem;font-weight:500}
+.sk-hd span:last-child{color:var(--cyan);font-family:var(--mono);font-size:.75rem}
+.sk-bar{height:2px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden}
+.sk-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--cyan),var(--purple));transform:scaleX(0);transform-origin:left;transition:transform 1.3s cubic-bezier(0.16,1,.3,1)}
+.sk-fill.go{transform:scaleX(1)}
+.tech-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(75px,1fr));gap:.6rem;margin-top:1.4rem}
+.ttag{padding:.4rem .7rem;background:var(--glass);border:1px solid var(--border);border-radius:8px;font-size:.72rem;font-weight:500;text-align:center;color:var(--text);transition:all .3s;font-family:var(--mono)}
+.ttag:hover{border-color:var(--border2);color:var(--cyan);transform:translateY(-2px)}
+
+/* GITHUB REPOS */
+#repos{padding:4rem 10vw 7rem}
+.repos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem}
+.repo-card{padding:1.2rem;background:var(--glass);border:1px solid var(--border);border-radius:16px;backdrop-filter:blur(16px);transition:all .3s;text-decoration:none;display:block}
+.repo-card:hover{border-color:var(--border2);transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,.25)}
+.repo-top{display:flex;align-items:center;gap:.6rem;margin-bottom:.6rem}
+.repo-icon{font-size:1.1rem}
+.repo-name{font-weight:600;font-size:.9rem;color:var(--cyan);font-family:var(--mono)}
+.repo-desc{font-size:.8rem;color:var(--muted);line-height:1.6;margin-bottom:.8rem}
+.repo-tags{display:flex;gap:.4rem;flex-wrap:wrap}
+.rtag{padding:.18rem .55rem;border-radius:100px;font-size:.68rem;font-weight:500;font-family:var(--mono)}
+.rtag.c{background:rgba(0,229,255,.07);border:1px solid rgba(0,229,255,.15);color:var(--cyan)}
+.rtag.p{background:rgba(168,85,247,.07);border:1px solid rgba(168,85,247,.15);color:var(--purple)}
+.rtag.pk{background:rgba(236,72,153,.07);border:1px solid rgba(236,72,153,.15);color:var(--pink)}
+.rtag.g{background:rgba(74,222,128,.07);border:1px solid rgba(74,222,128,.15);color:var(--green)}
+
+/* PROJECTS */
+#projects{padding:7rem 10vw}
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.3rem}
+.pcard{background:var(--glass);border:1px solid var(--border);border-radius:22px;overflow:hidden;transition:all .4s cubic-bezier(0.16,1,.3,1);position:relative;backdrop-filter:blur(20px)}
+.pcard::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,229,255,.03),rgba(168,85,247,.03));opacity:0;transition:opacity .3s}
+.pcard:hover{transform:translateY(-7px);border-color:var(--border2);box-shadow:0 25px 50px rgba(0,0,0,.3)}
+.pcard:hover::before{opacity:1}
+.ph{padding:1.4rem;border-bottom:1px solid var(--border)}
+.ptop{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.75rem}
+.pico{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+.plinks{display:flex;gap:.4rem}
+.plnk{width:30px;height:30px;border:1px solid var(--border);border-radius:7px;display:flex;align-items:center;justify-content:center;color:var(--muted);text-decoration:none;transition:all .3s;font-size:.75rem}
+.plnk:hover{border-color:var(--border2);color:var(--cyan)}
+.pname{font-family:var(--display);font-size:1.05rem;font-weight:700;margin-bottom:.35rem}
+.pdesc{font-size:.82rem;color:var(--muted);line-height:1.7}
+.pb{padding:1.4rem}
+.ptags{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.9rem}
+.pstats{display:flex;gap:1.3rem}
+.psv{font-family:var(--display);font-size:1rem;font-weight:700;color:var(--cyan)}
+.psl{font-size:.67rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+
+/* BINI WORK */
+#bini{padding:7rem 10vw}
+.bini-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+.bcard{padding:1.4rem;background:var(--glass);border:1px solid var(--border);border-radius:18px;backdrop-filter:blur(16px);transition:all .3s}
+.bcard:hover{border-color:var(--border2);transform:translateY(-3px)}
+.bcard-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:.9rem;font-size:1.1rem}
+.bcard-title{font-weight:700;font-size:.95rem;margin-bottom:.5rem}
+.bcard-list{list-style:none;display:flex;flex-direction:column;gap:.35rem}
+.bcard-list li{font-size:.8rem;color:var(--muted);padding-left:1rem;position:relative;line-height:1.6}
+.bcard-list li::before{content:'→';position:absolute;left:0;color:var(--cyan);font-size:.7rem}
+.bini-tech{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:2rem}
+.btag{padding:.35rem .85rem;background:rgba(0,229,255,.05);border:1px solid rgba(0,229,255,.12);border-radius:100px;font-size:.75rem;font-family:var(--mono);color:var(--cyan);font-weight:500}
+
+/* EXPERIENCE / TIMELINE */
+#experience{padding:7rem 10vw}
+.exp-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem}
+.timeline{position:relative;padding-left:1.8rem}
+.timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,var(--cyan),var(--purple),transparent)}
+.titem{position:relative;padding-left:1.8rem;padding-bottom:2.5rem}
+.tdot{position:absolute;left:-2.2rem;top:.25rem;width:9px;height:9px;border-radius:50%;background:var(--cyan);box-shadow:0 0 12px var(--cyan);border:2px solid var(--bg)}
+.tdate{font-size:.72rem;color:var(--cyan);font-weight:600;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.35rem;font-family:var(--mono)}
+.ttitle{font-family:var(--display);font-size:1rem;font-weight:700;margin-bottom:.15rem}
+.tco{font-size:.82rem;color:var(--muted);margin-bottom:.6rem}
+.tdesc{font-size:.82rem;color:var(--muted);line-height:1.75}
+.ttags{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.6rem}
+
+/* CERTIFICATIONS */
+.cert-grid{display:grid;grid-template-columns:1fr;gap:.75rem}
+.ccard{padding:1rem 1.2rem;background:var(--glass);border:1px solid var(--border);border-radius:14px;backdrop-filter:blur(16px);transition:all .3s;display:flex;gap:.9rem;align-items:flex-start}
+.ccard:hover{border-color:var(--border2);transform:translateX(4px)}
+.cico{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1rem}
+.cname{font-size:.85rem;font-weight:600;margin-bottom:.15rem}
+.ciss{font-size:.72rem;color:var(--muted)}
+.cbadge{font-size:.65rem;padding:.1rem .45rem;border-radius:100px;margin-left:.4rem;vertical-align:middle}
+.cbadge.top{background:rgba(0,229,255,.1);color:var(--cyan);border:1px solid rgba(0,229,255,.2)}
+
+/* CONTACT */
+#contact{padding:7rem 10vw;text-align:center}
+.contact-wrap{max-width:680px;margin:0 auto}
+.contact-big{font-family:var(--display);font-size:clamp(2rem,5vw,4rem);font-weight:800;letter-spacing:-0.03em;margin-bottom:.8rem;line-height:1.1}
+.contact-sub{color:var(--muted);font-size:.95rem;line-height:1.8;margin-bottom:2.5rem}
+.cform{background:var(--glass);border:1px solid var(--border);border-radius:22px;padding:2.2rem;backdrop-filter:blur(20px);text-align:left}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin-bottom:.9rem}
+.fg{display:flex;flex-direction:column;gap:.4rem;margin-bottom:.9rem}
+.fg label{font-size:.72rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.fg input,.fg textarea{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:11px;padding:.75rem .95rem;color:var(--text);font-family:var(--font);font-size:.88rem;transition:all .3s;outline:none;resize:none}
+.fg input:focus,.fg textarea:focus{border-color:var(--border2);box-shadow:0 0 0 3px rgba(0,229,255,.07)}
+.fg textarea{height:110px}
+.sbtn{width:100%;padding:.9rem;background:linear-gradient(135deg,var(--cyan),var(--purple));border:none;border-radius:11px;color:#000;font-weight:700;font-size:.95rem;cursor:pointer;transition:all .3s;font-family:var(--font);margin-top:.3rem}
+.sbtn:hover{transform:translateY(-2px);box-shadow:0 12px 35px rgba(0,229,255,.25)}
+.social-row{display:flex;justify-content:center;gap:.8rem;margin-top:2.5rem;flex-wrap:wrap}
+.sbtn2{display:inline-flex;align-items:center;gap:.4rem;padding:.55rem 1.2rem;border:1px solid var(--border);border-radius:100px;color:var(--muted);text-decoration:none;font-size:.8rem;font-weight:500;transition:all .3s;background:var(--glass);backdrop-filter:blur(10px)}
+.sbtn2:hover{border-color:var(--border2);color:var(--cyan);transform:translateY(-2px)}
+
+footer{text-align:center;padding:2rem;border-top:1px solid var(--border);color:var(--muted);font-size:.78rem;position:relative;z-index:2}
+footer span{background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:900px){
+  nav{padding:.9rem 1.5rem}
+  .nav-links{display:none}
+  .hero-wrap{grid-template-columns:1fr}
+  .hero-stats{flex-direction:row;flex-wrap:wrap}
+  #hero{padding:5vw;padding-top:80px}
+  .about-grid,.bini-grid,.exp-grid{grid-template-columns:1fr}
+  #about,#projects,#experience,#contact,#repos,#bini{padding:4rem 5vw}
+  .frow{grid-template-columns:1fr}
+  .hero-scroll{display:none}
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-trail"></div>
+<div class="blob b1"></div>
+<div class="blob b2"></div>
+<div class="blob b3"></div>
+<div class="grid-bg"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">NK.</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#repos">GitHub</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#bini">Bini Work</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="mailto:ss3534418@gmail.com" class="nav-cta">Hire Me →</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-wrap">
+    <div>
+      <div class="hero-badge">● Available for freelance &amp; full-time</div>
+      <h1 class="hero-name">
+        <span>Navenkumar S</span>
+        <span class="gradient-text">Full Stack Dev.</span>
+      </h1>
+      <p class="hero-role">B.Tech IT @ <strong>Kumaraguru College of Technology</strong> · Junior SWE @ <strong>Bini</strong></p>
+      <p class="hero-desc">Building scalable web apps with MERN, ASP.NET Core, and modern DevOps. 9 certifications, 7 GitHub repos, and real production experience. Open to freelance projects and opportunities.</p>
+      <div class="hero-btns">
+        <a href="#projects" class="btn-primary">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+          View Projects
+        </a>
+        <a href="https://www.linkedin.com/in/navenkumar-s-264599290/" target="_blank" class="btn-ghost">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+          LinkedIn
+        </a>
+        <a href="https://github.com/NAVENKUMAR68" target="_blank" class="btn-ghost">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          GitHub
+        </a>
+      </div>
+      <div class="hero-socials">
+        <a href="https://www.linkedin.com/in/navenkumar-s-264599290/" target="_blank" class="soc">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a href="https://github.com/NAVENKUMAR68" target="_blank" class="soc">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+        </a>
+        <a href="mailto:ss3534418@gmail.com" class="soc">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </a>
+        <a href="tel:8015099883" class="soc">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.37 2 2 0 0 1 3.58 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6.13 6.13l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="scard"><div class="snum" data-count="7">0</div><div class="slbl">GitHub Repos</div></div>
+      <div class="scard"><div class="snum" data-count="9">0</div><div class="slbl">Certifications</div></div>
+      <div class="scard"><div class="snum" data-count="2">0</div><div class="slbl">Internships</div></div>
+      <div class="scard"><div class="snum" style="font-size:1.3rem">7.84</div><div class="slbl">CGPA</div></div>
+    </div>
+  </div>
+  <div class="hero-scroll"><span>Scroll</span><div class="scl"></div></div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="reveal">
+    <p class="sec-label">// about me</p>
+    <h2 class="sec-title">Who I Am</h2>
+  </div>
+  <div class="about-grid reveal">
+    <div>
+      <div class="about-text">
+        <p>I'm a <strong>3rd-year B.Tech IT student</strong> at Kumaraguru College of Technology with hands-on production experience. I currently work as a <strong>Junior Software Intern at Bini</strong>, building real ASP.NET Core MVC applications with Entity Framework Core.</p>
+        <p>I've completed projects spanning full-stack MERN, Spring Boot, Kotlin Android, and CI/CD DevOps pipelines. My GitHub has <strong>7 active repositories</strong> including collaborative team projects at Bini (HarinVimal org).</p>
+        <p>I hold <strong>9 industry certifications</strong> from AWS, IBM, Infosys, Scaler, Great Learning, and Erasmus/Copenhagen universities via Coursera.</p>
+      </div>
+      <div class="info-card">
+        <div class="ir"><span class="lbl">College</span><span class="val">KCT, Coimbatore</span></div>
+        <div class="ir"><span class="lbl">Degree</span><span class="val">B.Tech IT (2023–2027)</span></div>
+        <div class="ir"><span class="lbl">CGPA</span><span class="val">7.84</span></div>
+        <div class="ir"><span class="lbl">Current Role</span><span class="val">Jr. SWE Intern @ Bini</span></div>
+        <div class="ir"><span class="lbl">Phone</span><span class="val">8015099883</span></div>
+        <div class="ir"><span class="lbl">Email</span><span class="val">ss3534418@gmail.com</span></div>
+        <div class="ir"><span class="lbl">GitHub</span><span class="val">NAVENKUMAR68</span></div>
+        <div class="ir"><span class="lbl">Status</span><span class="val" style="color:var(--green)">● Open to freelance</span></div>
+      </div>
+    </div>
+    <div>
+      <p class="sec-label" style="margin-bottom:1rem">// skills</p>
+      <div class="skills-wrap">
+        <div class="sk-item"><div class="sk-hd"><span>JavaScript / Node.js / Express</span><span>88%</span></div><div class="sk-bar"><div class="sk-fill" data-w=".88"></div></div></div>
+        <div class="sk-item"><div class="sk-hd"><span>React / HTML / CSS / Bootstrap</span><span>85%</span></div><div class="sk-bar"><div class="sk-fill" data-w=".85"></div></div></div>
+        <div class="sk-item"><div class="sk-hd"><span>ASP.NET Core MVC / C# / Razor</span><span>80%</span></div><div class="sk-bar"><div class="sk-fill" data-w=".80"></div></div></div>
+        <div class="sk-item"><div class="sk-hd"><span>Java / Spring Boot</span><span>78%</span></div><div class="sk-bar"><div class="sk-fill" data-w=".78"></div></div></div>
+        <div class="sk-item"><div class="sk-hd"><span>MongoDB / MySQL / PostgreSQL / EF Core</span><span>78%</span></div><div class="sk-bar"><div class="sk-fill" data-w=".78"></div></div></div>
+        <div class="sk-item"><div class="sk-hd"><span>Docker / Jenkins / CI/CD</span><span>72%</span></div><div class="sk-bar"><div class="sk-fill" data-w=".72"></div></div></div>
+        <div class="sk-item"><div class="sk-hd"><span>Kotlin / Jetpack Compose / Android</span><span>66%</span></div><div class="sk-bar"><div class="sk-fill" data-w=".66"></div></div></div>
+        <div class="sk-item"><div class="sk-hd"><span>Python</span><span>68%</span></div><div class="sk-bar"><div class="sk-fill" data-w=".68"></div></div></div>
+      </div>
+      <div class="tech-grid">
+        <div class="ttag">React</div><div class="ttag">Node.js</div><div class="ttag">ASP.NET</div>
+        <div class="ttag">C#</div><div class="ttag">Java</div><div class="ttag">Python</div>
+        <div class="ttag">MongoDB</div><div class="ttag">EF Core</div><div class="ttag">Docker</div>
+        <div class="ttag">Jenkins</div><div class="ttag">Socket.IO</div><div class="ttag">Kotlin</div>
+        <div class="ttag">Git</div><div class="ttag">Bootstrap</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- GITHUB REPOS -->
+<section id="repos">
+  <div class="reveal">
+    <p class="sec-label">// github · NAVENKUMAR68</p>
+    <h2 class="sec-title">Repositories</h2>
+  </div>
+  <div class="repos-grid reveal">
+    <a href="https://github.com/NAVENKUMAR68/restaurant-kot-system" target="_blank" class="repo-card">
+      <div class="repo-top"><span class="repo-icon">🍽️</span><span class="repo-name">restaurant-kot-system</span></div>
+      <p class="repo-desc">Real-time Kitchen Order Ticket system with MERN stack, Socket.IO, Docker, and Jenkins CI/CD pipeline. Sub-100ms updates.</p>
+      <div class="repo-tags"><span class="rtag c">MERN</span><span class="rtag p">Socket.IO</span><span class="rtag pk">Docker</span><span class="rtag g">Jenkins</span></div>
+    </a>
+    <a href="https://github.com/NAVENKUMAR68/SmartCampusKCT" target="_blank" class="repo-card">
+      <div class="repo-top"><span class="repo-icon">🏫</span><span class="repo-name">SmartCampusKCT</span></div>
+      <p class="repo-desc">Full-stack campus complaint management system with role-based access for students, parents, and admins. Built with Spring Boot + PostgreSQL.</p>
+      <div class="repo-tags"><span class="rtag p">Spring Boot</span><span class="rtag c">PostgreSQL</span><span class="rtag g">Full Stack</span></div>
+    </a>
+    <a href="https://github.com/NAVENKUMAR68/dlc-website" target="_blank" class="repo-card">
+      <div class="repo-top"><span class="repo-icon">🌐</span><span class="repo-name">dlc-website</span></div>
+      <p class="repo-desc">DLC club website — responsive multi-page web presence for a college club. Clean UI with modern web technologies.</p>
+      <div class="repo-tags"><span class="rtag c">HTML/CSS</span><span class="rtag p">JavaScript</span><span class="rtag g">Responsive</span></div>
+    </a>
+    <a href="https://github.com/NAVENKUMAR68/DLC-Chatbot-" target="_blank" class="repo-card">
+      <div class="repo-top"><span class="repo-icon">🤖</span><span class="repo-name">DLC-Chatbot</span></div>
+      <p class="repo-desc">AI-powered chatbot for the DLC club. Handles FAQ automation and user interaction with a conversational interface.</p>
+      <div class="repo-tags"><span class="rtag pk">Chatbot</span><span class="rtag c">JavaScript</span><span class="rtag p">AI</span></div>
+    </a>
+    <a href="https://github.com/HarinVimal/bini_group" target="_blank" class="repo-card">
+      <div class="repo-top"><span class="repo-icon">🏢</span><span class="repo-name">bini_group</span></div>
+      <p class="repo-desc">Bini corporate group website — contributed as part of the Bini Tech internship team. ASP.NET Core MVC with C# backend.</p>
+      <div class="repo-tags"><span class="rtag p">ASP.NET</span><span class="rtag c">C#</span><span class="rtag g">Team Project</span></div>
+    </a>
+    <a href="https://github.com/HarinVimal/wander_with_food" target="_blank" class="repo-card">
+      <div class="repo-top"><span class="repo-icon">🍜</span><span class="repo-name">wander_with_food</span></div>
+      <p class="repo-desc">Food travel platform built with the Bini team. Collaborative full-stack project with real-world deployment and QA.</p>
+      <div class="repo-tags"><span class="rtag c">Full Stack</span><span class="rtag p">Team</span><span class="rtag g">Deployed</span></div>
+    </a>
+    <a href="https://github.com/NAVENKUMAR68/NAVENKUMAR68" target="_blank" class="repo-card">
+      <div class="repo-top"><span class="repo-icon">⚡</span><span class="repo-name">NAVENKUMAR68</span></div>
+      <p class="repo-desc">GitHub profile README with animated stats, badges, and dynamic content. First impression on GitHub profile visits.</p>
+      <div class="repo-tags"><span class="rtag c">Profile</span><span class="rtag p">Markdown</span></div>
+    </a>
+  </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="reveal">
+    <p class="sec-label">// featured projects</p>
+    <h2 class="sec-title">What I've Built</h2>
+  </div>
+  <div class="proj-grid reveal">
+    <div class="pcard">
+      <div class="ph">
+        <div class="ptop">
+          <div class="pico" style="background:linear-gradient(135deg,rgba(0,229,255,.15),rgba(168,85,247,.12));border:1px solid rgba(0,229,255,.2)">🍽️</div>
+          <div class="plinks">
+            <a href="https://github.com/NAVENKUMAR68/restaurant-kot-system" target="_blank" class="plnk">↗</a>
+          </div>
+        </div>
+        <div class="pname">Smart KOT System</div>
+        <div class="pdesc">Real-time kitchen order management with MERN stack, Socket.IO for live updates, Jenkins CI/CD, and full Dockerization with Docker Compose.</div>
+      </div>
+      <div class="pb">
+        <div class="ptags">
+          <span class="rtag c">MERN</span><span class="rtag p">Socket.IO</span><span class="rtag pk">Docker</span><span class="rtag g">Jenkins</span>
+        </div>
+        <div class="pstats">
+          <div><div class="psv">&lt;100ms</div><div class="psl">Latency</div></div>
+          <div><div class="psv">CI/CD</div><div class="psl">Pipeline</div></div>
+          <div><div class="psv">100%</div><div class="psl">Containerized</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="pcard">
+      <div class="ph">
+        <div class="ptop">
+          <div class="pico" style="background:linear-gradient(135deg,rgba(168,85,247,.15),rgba(236,72,153,.12));border:1px solid rgba(168,85,247,.2)">🏫</div>
+          <div class="plinks">
+            <a href="https://github.com/NAVENKUMAR68/SmartCampusKCT" target="_blank" class="plnk">↗</a>
+          </div>
+        </div>
+        <div class="pname">Campus Complaint System</div>
+        <div class="pdesc">Full-stack complaint tracking platform with role-based dashboards for students, parents, and admins. Spring Boot REST API + PostgreSQL backend.</div>
+      </div>
+      <div class="pb">
+        <div class="ptags">
+          <span class="rtag p">Spring Boot</span><span class="rtag c">PostgreSQL</span><span class="rtag pk">RBAC</span><span class="rtag g">REST API</span>
+        </div>
+        <div class="pstats">
+          <div><div class="psv">3</div><div class="psl">User Roles</div></div>
+          <div><div class="psv">REST</div><div class="psl">API</div></div>
+          <div><div class="psv">Full</div><div class="psl">Stack</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="pcard">
+      <div class="ph">
+        <div class="ptop">
+          <div class="pico" style="background:linear-gradient(135deg,rgba(59,130,246,.15),rgba(0,229,255,.12));border:1px solid rgba(59,130,246,.2)">📍</div>
+          <div class="plinks">
+            <a href="#" class="plnk">↗</a>
+          </div>
+        </div>
+        <div class="pname">Campus Navigation App</div>
+        <div class="pdesc">Native Android app for navigating KCT campus with interactive map markers for all academic blocks and key locations. Built with Kotlin + Jetpack Compose.</div>
+      </div>
+      <div class="pb">
+        <div class="ptags">
+          <span class="rtag c">Kotlin</span><span class="rtag p">Jetpack Compose</span><span class="rtag g">Maps API</span>
+        </div>
+        <div class="pstats">
+          <div><div class="psv">Android</div><div class="psl">Native</div></div>
+          <div><div class="psv">Maps</div><div class="psl">Integrated</div></div>
+          <div><div class="psv">KCT</div><div class="psl">Campus</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- BINI WORK -->
+<section id="bini">
+  <div class="reveal">
+    <p class="sec-label">// professional experience</p>
+    <h2 class="sec-title">Work at Bini</h2>
+    <p style="color:var(--muted);font-size:.9rem;margin-top:-1.5rem;margin-bottom:2rem;max-width:600px">Currently working as Junior Software Intern at Bini Technologies — contributing to production web applications with a real engineering team.</p>
+  </div>
+  <div class="bini-grid reveal">
+    <div class="bcard">
+      <div class="bcard-icon" style="background:linear-gradient(135deg,rgba(0,229,255,.12),rgba(59,130,246,.1));border:1px solid rgba(0,229,255,.18)">🖥️</div>
+      <div class="bcard-title">Admin Dashboard & Website</div>
+      <ul class="bcard-list">
+        <li>Worked on BINI admin dashboard and website modules</li>
+        <li>Debugged and fixed FAQ heading/category ordering issues</li>
+        <li>Improved repository-level sorting logic using EF Core queries</li>
+        <li>Tested and reviewed hosted website functionalities post-deployment</li>
+      </ul>
+    </div>
+    <div class="bcard">
+      <div class="bcard-icon" style="background:linear-gradient(135deg,rgba(168,85,247,.12),rgba(236,72,153,.1));border:1px solid rgba(168,85,247,.18)">🐛</div>
+      <div class="bcard-title">Bug Fixing & Debugging</div>
+      <ul class="bcard-list">
+        <li>Fixed enquiry form modal — users couldn't type due to overlay CSS pointer-event conflicts</li>
+        <li>Debugged Bootstrap modal behavior and duplicate backdrop issues</li>
+        <li>Performed frontend testing and UI validation across multiple pages</li>
+        <li>Reviewed and reported website bugs after hosting</li>
+      </ul>
+    </div>
+    <div class="bcard">
+      <div class="bcard-icon" style="background:linear-gradient(135deg,rgba(74,222,128,.12),rgba(0,229,255,.1));border:1px solid rgba(74,222,128,.18)">🎨</div>
+      <div class="bcard-title">Frontend & UI Work</div>
+      <ul class="bcard-list">
+        <li>Worked with Razor Views (.cshtml), Bootstrap 5, JS, and CSS</li>
+        <li>Handled modal interactions, form behavior, and responsive UI fixes</li>
+        <li>Improved user interaction flow without touching critical session management code</li>
+      </ul>
+    </div>
+    <div class="bcard">
+      <div class="bcard-icon" style="background:linear-gradient(135deg,rgba(236,72,153,.12),rgba(168,85,247,.1));border:1px solid rgba(236,72,153,.18)">⚙️</div>
+      <div class="bcard-title">Backend & Team Work</div>
+      <ul class="bcard-list">
+        <li>Modified ASP.NET Core MVC repository methods and CRUD operations</li>
+        <li>Used Entity Framework Core for database interaction and data ordering</li>
+        <li>Collaborated with Bini Tech Interns team during testing and debugging</li>
+        <li>Progressed from general tasks to W2F team responsibilities</li>
+      </ul>
+    </div>
+  </div>
+  <div class="bini-tech reveal">
+    <span class="btag">ASP.NET Core MVC</span><span class="btag">C#</span><span class="btag">Entity Framework Core</span>
+    <span class="btag">Razor Pages / CSHTML</span><span class="btag">Bootstrap 5</span><span class="btag">JavaScript</span>
+    <span class="btag">HTML/CSS</span><span class="btag">Git & GitHub</span>
+  </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="reveal">
+    <p class="sec-label">// journey</p>
+    <h2 class="sec-title">Experience & Certifications</h2>
+  </div>
+  <div class="exp-grid reveal">
+    <div>
+      <p class="sec-label" style="margin-bottom:1.3rem">// internships</p>
+      <div class="timeline">
+        <div class="titem">
+          <div class="tdot"></div>
+          <div class="tdate">Present — 2025</div>
+          <div class="ttitle">Junior Software Intern</div>
+          <div class="tco">Bini Technologies · Full Stack</div>
+          <div class="tdesc">Building and maintaining real ASP.NET Core MVC production apps. Fixing bugs, implementing features, and collaborating with the engineering team on the W2F project.</div>
+          <div class="ttags"><span class="rtag c">ASP.NET</span><span class="rtag p">C#</span><span class="rtag pk">EF Core</span><span class="rtag g">Production</span></div>
+        </div>
+        <div class="titem">
+          <div class="tdot" style="background:var(--purple);box-shadow:0 0 12px var(--purple)"></div>
+          <div class="tdate">June 2025 · 30 days</div>
+          <div class="ttitle">Web Development Intern</div>
+          <div class="tco">CollegeTips.in · Summer Program</div>
+          <div class="tdesc">Built and improved responsive web pages during the 30-day summer internship. Recognized as punctual, hardworking, and inquisitive.</div>
+          <div class="ttags"><span class="rtag c">HTML/CSS</span><span class="rtag p">JavaScript</span><span class="rtag g">Responsive</span></div>
+        </div>
+        <div class="titem">
+          <div class="tdot" style="background:var(--pink);box-shadow:0 0 12px var(--pink)"></div>
+          <div class="tdate">2024 · HappyFox</div>
+          <div class="ttitle">Hackathon Participant</div>
+          <div class="tco">HappyFox · Collaborative Innovation</div>
+          <div class="tdesc">Participated in collaborative problem-solving and innovation at the HappyFox Hackathon.</div>
+          <div class="ttags"><span class="rtag pk">Hackathon</span><span class="rtag c">Innovation</span></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <p class="sec-label" style="margin-bottom:1.3rem">// 9 certifications</p>
+      <div class="cert-grid">
+        <div class="ccard">
+          <div class="cico" style="background:linear-gradient(135deg,rgba(255,153,0,.15),rgba(255,100,0,.1));border:1px solid rgba(255,153,0,.2)">☁️</div>
+          <div><div class="cname">AWS Academy Cloud Foundations <span class="cbadge top">20hrs</span></div><div class="ciss">Amazon Web Services · Issued Mar 2025</div></div>
+        </div>
+        <div class="ccard">
+          <div class="cico" style="background:linear-gradient(135deg,rgba(59,130,246,.15),rgba(0,229,255,.1));border:1px solid rgba(59,130,246,.2)">🔷</div>
+          <div><div class="cname">Node.js & MongoDB: Backend Database Apps</div><div class="ciss">IBM via Coursera · Mar 2025</div></div>
+        </div>
+        <div class="ccard">
+          <div class="cico" style="background:linear-gradient(135deg,rgba(0,100,255,.15),rgba(0,50,200,.1));border:1px solid rgba(0,100,255,.2)">🏢</div>
+          <div><div class="cname">Software Engineering and ALM</div><div class="ciss">Infosys Springboard · Feb 2026</div></div>
+        </div>
+        <div class="ccard">
+          <div class="cico" style="background:linear-gradient(135deg,rgba(168,85,247,.15),rgba(236,72,153,.1));border:1px solid rgba(168,85,247,.2)">🗃️</div>
+          <div><div class="cname">DBMS — Master Fundamentals & Advanced</div><div class="ciss">Scaler Topics · Aug 2024 · 74 videos</div></div>
+        </div>
+        <div class="ccard">
+          <div class="cico" style="background:linear-gradient(135deg,rgba(74,222,128,.15),rgba(0,229,255,.1));border:1px solid rgba(74,222,128,.2)">📊</div>
+          <div><div class="cname">Data Structures in C</div><div class="ciss">Great Learning Academy · Sep 2024</div></div>
+        </div>
+        <div class="ccard">
+          <div class="cico" style="background:linear-gradient(135deg,rgba(59,130,246,.15),rgba(168,85,247,.1));border:1px solid rgba(59,130,246,.2)">🔬</div>
+          <div><div class="cname">What is Data Science?</div><div class="ciss">IBM via Coursera · Jun 2024</div></div>
+        </div>
+        <div class="ccard">
+          <div class="cico" style="background:linear-gradient(135deg,rgba(74,222,128,.15),rgba(59,130,246,.1));border:1px solid rgba(74,222,128,.2)">🌍</div>
+          <div><div class="cname">Business towards Sustainable Dev Goals</div><div class="ciss">Erasmus University Rotterdam · Jun 2024</div></div>
+        </div>
+        <div class="ccard">
+          <div class="cico" style="background:linear-gradient(135deg,rgba(236,72,153,.15),rgba(168,85,247,.1));border:1px solid rgba(236,72,153,.2)">🌐</div>
+          <div><div class="cname">SDGs — A Global Transdisciplinary Vision</div><div class="ciss">University of Copenhagen · Jun 2024</div></div>
+        </div>
+        <div class="ccard">
+          <div class="cico" style="background:linear-gradient(135deg,rgba(255,200,0,.15),rgba(255,100,0,.1));border:1px solid rgba(255,200,0,.2)">🇺🇳</div>
+          <div><div class="cname">FAO Science and Innovation Strategy</div><div class="ciss">Food & Agriculture Org. UN · Jan 2025</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-wrap reveal">
+    <p class="sec-label">// get in touch</p>
+    <h2 class="contact-big">Let's Build<br><span class="gradient-text">Something Great</span></h2>
+    <p class="contact-sub">Open to freelance web projects, internship offers, and full-time opportunities. Have a business that needs a website? Let's talk.</p>
+    <div class="cform">
+      <div class="frow">
+        <div class="fg"><label>Your Name</label><input type="text" placeholder="John Doe"></div>
+        <div class="fg"><label>Email</label><input type="email" placeholder="john@example.com"></div>
+      </div>
+      <div class="fg"><label>Subject</label><input type="text" placeholder="Website for my business..."></div>
+      <div class="fg"><label>Message</label><textarea placeholder="Tell me about your project..."></textarea></div>
+      <button class="sbtn" onclick="handleSend(this)">Send Message →</button>
+    </div>
+    <div class="social-row">
+      <a href="https://www.linkedin.com/in/navenkumar-s-264599290/" target="_blank" class="sbtn2">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+        LinkedIn
+      </a>
+      <a href="https://github.com/NAVENKUMAR68" target="_blank" class="sbtn2">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+        GitHub
+      </a>
+      <a href="mailto:ss3534418@gmail.com" class="sbtn2">📧 ss3534418@gmail.com</a>
+      <a href="tel:8015099883" class="sbtn2">📞 8015099883</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 <span>Navenkumar S</span> · Built with passion · KCT '27 · Junior SWE @ Bini</p>
+</footer>
+
+<script>
+// CURSOR
+const cur=document.getElementById('cursor'),trail=document.getElementById('cursor-trail');
+let mx=0,my=0,tx=0,ty=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+(function loop(){tx+=(mx-tx)*.11;ty+=(my-ty)*.11;trail.style.left=tx+'px';trail.style.top=ty+'px';requestAnimationFrame(loop)})();
+document.querySelectorAll('a,button,.repo-card,.pcard,.bcard,.ccard,.ttag').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='18px';cur.style.height='18px'});
+  el.addEventListener('mouseleave',()=>{cur.style.width='10px';cur.style.height='10px'});
+});
+
+// COUNTER
+function count(el,n){let c=0;const s=n/45;const t=setInterval(()=>{c+=s;if(c>=n){c=n;clearInterval(t)}el.textContent=Math.floor(c)+(el.dataset.suffix||'')},35)}
+const statsObs=new IntersectionObserver(e=>{e.forEach(en=>{if(en.isIntersecting){document.querySelectorAll('[data-count]').forEach(el=>count(el,+el.dataset.count));statsObs.disconnect()}})});
+const se=document.querySelector('.hero-stats');if(se)statsObs.observe(se);
+
+// SKILL BARS
+const skillObs=new IntersectionObserver(e=>{e.forEach(en=>{if(en.isIntersecting){en.target.querySelectorAll('.sk-fill').forEach((b,i)=>setTimeout(()=>{b.style.width=(+b.dataset.w*100)+'%';b.classList.add('go')},i*80))}})},{threshold:.2});
+document.querySelectorAll('.skills-wrap').forEach(el=>skillObs.observe(el));
+
+// REVEAL
+const revObs=new IntersectionObserver(e=>{e.forEach(en=>{if(en.isIntersecting)en.target.classList.add('visible')})},{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
+
+// SMOOTH SCROLL
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'})})
+});
+
+// FORM
+function handleSend(btn){btn.textContent='✓ Sent! I\'ll be in touch soon.';btn.style.background='linear-gradient(135deg,#4ade80,#22c55e)';setTimeout(()=>{btn.textContent='Send Message →';btn.style.background=''},4000)}
+</script>
+</body>
+</html>
